@@ -3,6 +3,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { FaRegCalendarAlt, FaRegListAlt } from 'react-icons/fa';
+import { toast } from 'react-toastify'; // Import the toast function
 import { useSelectedProjectValue } from '../context';
 import { firestore } from '../firebase'; // Import firestore from firebase.js
 import { ProjectOverlay } from './ProjectOverlay';
@@ -46,9 +47,13 @@ export const AddTask = ({
         setProject('');
         setShowMain(false);
         setShowProjectOverlay(false);
+        
+        // Trigger success toast notification after task is added
+        toast.success('Task successfully added!');
       }
     } catch (error) {
       console.error('Error adding task: ', error);
+      toast.error('Error adding task. Please try again.');
     }
   };
 

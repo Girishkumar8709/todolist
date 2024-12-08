@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useProjectsValue, useSelectedProjectValue } from '../context';
-import { IndividualProject } from './IndividualProject';
+import IndividualProject from './IndividualProject';
+
 
 export const Projects = ({ activeValue = null }) => {
   const [active, setActive] = useState(activeValue);
@@ -45,5 +46,5 @@ export const Projects = ({ activeValue = null }) => {
 };
 
 Projects.propTypes = {
-  activeValue: PropTypes.bool,
+  activeValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Updated type
 };

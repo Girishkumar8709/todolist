@@ -2,9 +2,9 @@ import React from 'react';
 import { Tasks } from '../Tasks';
 import { Sidebar } from './Sidebar';
 
-export const Content = () => (
+export const Content = ({ sidebarVisible, toggleSidebar }) => (
   <section className="content">
-    <Sidebar />
+    <Sidebar sidebarVisible={sidebarVisible} toggleSidebar={toggleSidebar} /> {/* Pass props to Sidebar */}
     <Tasks />
   </section>
 );

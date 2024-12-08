@@ -1,64 +1,55 @@
 import { deleteDoc, doc } from 'firebase/firestore';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
-import { useProjectsValue, useSelectedProjectValue } from '../context';
+import { toast } from 'react-toastify';
+import { ProjectsContext } from '../context/projects-context';
 import { firestore } from '../firebase';
 
-export const IndividualProject = ({ project }) => {
-  const [showConfirm, setShowConfirm] = useState(false);
-  const { projects, setProjects } = useProjectsValue();
-  const { setSelectedProject } = useSelectedProjectValue();
+const IndividualProject = ({ project }) => {
+  const { projects, setProjects } = useContext(ProjectsContext); // Accessing context directly
 
   const deleteProject = async (docId) => {
     const projectDocRef = doc(firestore, 'projects', docId);
-    await deleteDoc(projectDocRef);
-    setProjects([...projects]);
-    setSelectedProject('INBOX');
+    try {
+      // Delete project from Firestore
+      await deleteDoc(projectDocRef);
+
+      // Remove project from local state
+      const updatedProjects = projects.filter((project) => project.docId !== docId);
+      setProjects(updatedProjects);
+
+      // Show success notification
+      toast.success(`Project "${project.name}" has been deleted.`, {
+        position: 'top-right',
+        autoClose: 5000,
+      });
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      toast.error('Failed to delete project. Please try again.', {
+        position: 'top-right',
+        autoClose: 5000,
+      });
+    }
   };
 
   return (
-    <>
+    <div className="sidebar__project">
       <span className="sidebar__dot">•</span>
       <span className="sidebar__project-name">{project.name}</span>
       <span
         className="sidebar__project-delete"
-        data-testid="delete-project"
-        onClick={() => setShowConfirm(!showConfirm)}
+        onClick={() => deleteProject(project.docId)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') setShowConfirm(!showConfirm);
+          if (e.key === 'Enter') deleteProject(project.docId);
         }}
         tabIndex={0}
         role="button"
-        aria-label="Confirm deletion of project"
+        aria-label="Delete project"
       >
         <FaTrashAlt />
-        {showConfirm && (
-          <div className="project-delete-modal">
-            <div className="project-delete-modal__inner">
-              <p>Are you sure you want to delete this project?</p>
-              <button
-                type="button"
-                onClick={() => deleteProject(project.docId)}
-              >
-                Delete
-              </button>
-              <span
-                onClick={() => setShowConfirm(!showConfirm)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') setShowConfirm(!showConfirm);
-                }}
-                tabIndex={0}
-                role="button"
-                aria-label="Cancel deleting project"
-              >
-                Cancel
-              </span>
-            </div>
-          </div>
-        )}
       </span>
-    </>
+    </div>
   );
 };
 
@@ -68,3 +59,5 @@ IndividualProject.propTypes = {
     name: PropTypes.string.isRequired,
   }).isRequired,
 };
+
+export default IndividualProject;

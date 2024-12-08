@@ -1,18 +1,37 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { FaPizzaSlice } from 'react-icons/fa';
-import { AddTask } from '../AddTask';
+import { FaBars, FaPizzaSlice } from 'react-icons/fa';
 
-export const Header = ({ darkMode, setDarkMode }) => {
+export const Header = ({ darkMode, setDarkMode, isAuthenticated, toggleSidebar, setShowQuickAddTask }) => {
   const [shouldShowMain, setShouldShowMain] = useState(false);
-  const [showQuickAddTask, setShowQuickAddTask] = useState(false);
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
-    <header className="header" data-testid="header">
+    <header className="header">
       <nav>
-        <div className="logo">
-          <img src="/images/logo.png" alt="Todoist" />
+        {/* Hamburger Button */}
+        <div className='logo_first'>
+          <div className="header__hamburger">
+            <button
+              aria-label="Toggle Sidebar"
+              type="button"
+              onClick={toggleSidebar} // Trigger sidebar toggle
+              style={{ background: 'none', color: 'white', border: 'none' }}
+            >
+              <FaBars />
+            </button>
+          </div>
+
+          {/* Logo */}
+          <div className="logo">
+            <img src="/images/logo.png" alt="Todoist" />
+          </div>
         </div>
+
+        {/* Dark Mode & Quick Add Task Buttons */}
         <div className="settings">
           <ul>
             <li className="settings__add">
@@ -21,7 +40,7 @@ export const Header = ({ darkMode, setDarkMode }) => {
                 aria-label="Quick add task"
                 type="button"
                 onClick={() => {
-                  setShowQuickAddTask(true);
+                  setShowQuickAddTask(true); // This will show the quick add task form
                   setShouldShowMain(true);
                 }}
               >
@@ -41,13 +60,6 @@ export const Header = ({ darkMode, setDarkMode }) => {
           </ul>
         </div>
       </nav>
-
-      <AddTask
-        showAddTaskMain={false}
-        shouldShowMain={shouldShowMain}
-        showQuickAddTask={showQuickAddTask}
-        setShowQuickAddTask={setShowQuickAddTask}
-      />
     </header>
   );
 };
@@ -55,4 +67,7 @@ export const Header = ({ darkMode, setDarkMode }) => {
 Header.propTypes = {
   darkMode: PropTypes.bool.isRequired,
   setDarkMode: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  toggleSidebar: PropTypes.func.isRequired, // Accept toggleSidebar prop
+  setShowQuickAddTask: PropTypes.func.isRequired, // Accept setShowQuickAddTask function
 };

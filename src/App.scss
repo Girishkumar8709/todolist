@@ -39,7 +39,7 @@ $generic-border: 1px solid #f1f1f1;
 $generic-bg: #db4c3f;
 
 /* Mixins
-     ============================================ */
+        ============================================ */
 @mixin box-overlay() {
     -webkit-box-shadow: $generic-box-shadow;
     box-shadow: $generic-box-shadow;
@@ -138,7 +138,7 @@ $generic-bg: #db4c3f;
 }
 
 /* Darkmode
-     ============================================ */
+        ============================================ */
 .darkmode {
     header {
         -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
@@ -149,7 +149,9 @@ $generic-bg: #db4c3f;
 }
 
 /* Header
-     ============================================ */
+        ============================================ */
+/* Header
+    ============================================ */
 header {
     border-bottom: solid 1px #ca2100;
     background-color: $generic-bg;
@@ -163,8 +165,12 @@ header {
     top: 0;
     width: 100%;
 
-    @include mq('900px') {
-        padding: 0 10px;
+    @include mq('800px') {
+        padding: 0 20px 0 20px;
+    }
+
+    @include mq('500px') {
+        padding: 0 10px 0 30px;
     }
 
     nav {
@@ -180,20 +186,47 @@ header {
         margin: auto;
         height: 44px;
 
+
+        @include mq(400px){
+            margin: 0 0 0 -20px;
+        }
+
         p,
         li {
             color: white;
         }
 
         div {
+            &.logo_first {
+
+                .header__hamburger {
+                    @include mq('10000px') {
+                        display: none;
+                    }
+
+                    @include mq('600px') {
+                        display: block;
+                        
+
+                        .logo_first {
+                            display: grid;
+
+                        }
+                    }
+                }
+            }
+
             &.logo {
-                padding-left: 8px;
-                grid-area: 1 / 1;
+                padding-left: 2px;
+                grid-area: 1 / 2;
+
+                @include mq(500px){
+                    display: none;
+                }
 
                 img {
                     width: 24px;
                 }
-
             }
 
             &.settings {
@@ -206,7 +239,6 @@ header {
 
                 ul li {
                     @include va;
-
                     list-style-type: none;
                     cursor: pointer;
                     width: 30px;
@@ -217,7 +249,7 @@ header {
 
                     &:hover {
                         border-radius: 3px;
-                        background-color: rgba(255, 255, 255, 0.2);
+                        background-color: rgba(179, 168, 168, 0.2);
                     }
 
                     &.settings__add {
@@ -229,6 +261,11 @@ header {
                             color: white;
                             cursor: pointer;
                         }
+                    }
+
+                    &.header__hamburger {
+                        margin-right: 10px;
+                        margin-left: 10px;
                     }
 
                     &.settings__darkmode {
@@ -245,7 +282,6 @@ header {
                                 height: 20px;
                             }
                         }
-
                     }
                 }
             }
@@ -253,183 +289,200 @@ header {
     }
 }
 
+
 /* Sidebar
-     ============================================ */
-.sidebar {
-    @include no-select();
-    width: 266px;
-    height: calc(100vh);
-    padding-top: 74px;
-    position: fixed;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    border-right: $generic-border;
-    background-color: #fafafa;
+        ============================================ */
+        .sidebar {
+            @include no-select();
+            width: 266px;
+            height: calc(100vh);
+            padding-top: 74px;
+            position: fixed;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            border-right: $generic-border;
+            background-color: #fafafa;
+        
+            // Make the sidebar hidden on mobile by default
+            display: block;
+        
+            // Make the sidebar visible on larger screens (desktop/tablet)
+            @include mq('700px') {
+                display: none;
 
-    @include mq('900px') {
-        display: none;
-    }
-
-    li {
-        &:hover .sidebar__project-delete {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-        }
-    }
-
-    &__project {
-        cursor: pointer;
-
-        div:nth-child(1) {
-            padding: 5px 0;
-            padding-left: 10px;
-            padding-right: 15px;
-            width: 100%;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-        }
-
-        &-delete {
-            margin-left: auto;
-            display: none;
-
-            svg {
-                color: #cacaca;
+                &.active,
+                &:hover {
+                    font-weight: bold;
+                    background-color: white;
+                }
             }
-        }
+        
+            // Add the 'visible' class when toggled, on mobile devices
+            &.visible {
+                display: block;
 
-        &.active,
-        &:hover {
-            font-weight: bold;
-            background-color: white;
-        }
-
-        &:nth-child(1) {
-            .sidebar__dot {
-                color: #6accbc;
             }
-        }
-
-        &:nth-child(2) {
-            .sidebar__dot {
-                color: #fad003;
+        
+            li {
+                &:hover .sidebar__project-delete {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                }
             }
-        }
-
-        &:nth-child(3) {
-            .sidebar__dot {
-                color: #ff8d85;
-            }
-        }
-
-        &:nth-child(4) {
-            .sidebar__dot {
-                color: #ff9932;
-            }
-        }
-
-        &:nth-child(5) {
-            .sidebar__dot {
-                color: #af38eb;
-            }
-        }
-    }
-
-    &__projects {
-        padding-left: 3px;
-    }
-
-    &__project {
-        @include va('left');
-    }
-
-    &__dot {
-        margin-right: 10px;
-        font-size: 30px;
-    }
-
-    &__middle {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        border-bottom: $generic-border;
-        padding-left: 10px;
-        cursor: pointer;
-
-        span {
-            color: #0000008a;
-            margin-right: 10px;
-
-            svg.hidden-projects {
-                -webkit-transform: rotate(-90deg);
-                transform: rotate(-90deg);
-            }
-        }
-
-        h2 {
-            margin: 0;
-            color: #333;
-            font-size: 15px;
-            font-weight: bold;
-            padding-bottom: 20px;
-        }
-    }
-
-    &__generic {
-        li {
-            list-style-type: none;
-            color: #333;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            cursor: pointer;
-            line-height: 1.50;
-            font-size: 15px;
-            padding-left: 0;
-            padding-right: 0;
-
-            div:nth-child(1) {
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                padding: 10px 0 10px 10px;
-                width: 100%;
-
-                span:first-of-type {
-                    margin-right: 10px;
+        
+            // Sidebar Project Styles
+            &__project {
+                cursor: pointer;
+        
+                div:nth-child(1) {
+                    padding: 5px 0;
+                    padding-left: 10px;
+                    padding-right: 15px;
+                    width: 100%;
                     display: -webkit-box;
                     display: -ms-flexbox;
                     display: flex;
                     -webkit-box-align: center;
                     -ms-flex-align: center;
                     align-items: center;
-
+                }
+        
+                &-delete {
+                    margin-left: auto;
+                    display: none;
+        
                     svg {
-                        width: 18px;
-                        height: 18px;
-                        color: #555;
+                        color: #cacaca;
+                    }
+                }
+        
+                &.active,
+                &:hover {
+                    font-weight: bold;
+                    background-color: white;
+                }
+        
+                &:nth-child(1) {
+                    .sidebar__dot {
+                        color: #6accbc;
+                    }
+                }
+        
+                &:nth-child(2) {
+                    .sidebar__dot {
+                        color: #fad003;
+                    }
+                }
+        
+                &:nth-child(3) {
+                    .sidebar__dot {
+                        color: #ff8d85;
+                    }
+                }
+        
+                &:nth-child(4) {
+                    .sidebar__dot {
+                        color: #ff9932;
+                    }
+                }
+        
+                &:nth-child(5) {
+                    .sidebar__dot {
+                        color: #af38eb;
                     }
                 }
             }
-
-            &.active,
-            &:hover {
-                font-weight: bold;
-                background-color: white;
+        
+            &__projects {
+                padding-left: 3px;
+            }
+        
+            &__dot {
+                margin-right: 10px;
+                font-size: 30px;
+            }
+        
+            &__middle {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                border-bottom: $generic-border;
+                padding-left: 10px;
+                cursor: pointer;
+        
+                span {
+                    color: #0000008a;
+                    margin-right: 10px;
+        
+                    svg.hidden-projects {
+                        -webkit-transform: rotate(-90deg);
+                        transform: rotate(-90deg);
+                    }
+                }
+        
+                h2 {
+                    margin: 0;
+                    color: #333;
+                    font-size: 15px;
+                    font-weight: bold;
+                    padding-bottom: 20px;
+                }
+            }
+        
+            &__generic {
+                li {
+                    list-style-type: none;
+                    color: #333;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    cursor: pointer;
+                    line-height: 1.50;
+                    font-size: 15px;
+                    padding-left: 0;
+                    padding-right: 0;
+        
+                    div:nth-child(1) {
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        padding: 10px 0 10px 10px;
+                        width: 100%;
+        
+                        span:first-of-type {
+                            margin-right: 10px;
+                            display: -webkit-box;
+                            display: -ms-flexbox;
+                            display: flex;
+                            -webkit-box-align: center;
+                            -ms-flex-align: center;
+                            align-items: center;
+        
+                            svg {
+                                width: 18px;
+                                height: 18px;
+                                color: #555;
+                            }
+                        }
+                    }
+        
+                    &.active,
+                    &:hover {
+                        font-weight: bold;
+                        background-color: white;
+                    }
+                }
             }
         }
-    }
-}
+        
+        
+
 
 /* Show Confirm Delete
-     ============================================ */
+        ============================================ */
 .project-delete-modal {
     position: relative;
 
@@ -462,7 +515,7 @@ header {
 }
 
 /* Main Content
-     ============================================ */
+        ============================================ */
 .content {
     display: grid;
     -webkit-box-align: center;
@@ -474,7 +527,7 @@ header {
 }
 
 /* Tasks
-     ============================================ */
+        ============================================ */
 .tasks {
     width: 656px;
     background-color: white;
@@ -487,9 +540,31 @@ header {
     padding-top: 80px;
     padding-bottom: 84px;
 
-    @include mq('900px') {
+    @include mq('800px') {
         margin-left: 0;
         width: auto;
+        background-color: white;
+        margin-left: 266px;
+        border-right: $generic-border;
+        min-height: calc(100vh);
+        vertical-align: top;
+        padding-left: 40px;
+        padding-right: 40px;
+        padding-top: 80px;
+        padding-bottom: 84px;
+    }
+
+    @include mq('500px') {
+        width: auto;
+        background-color: white;
+        margin-left: 0px;
+        border-right: $generic-border;
+        min-height: calc(100vh);
+        vertical-align: top;
+        padding-left: 20px;
+        padding-right: 60px;
+        padding-top: 75px;
+        padding-bottom: 4px;
     }
 
     h2 {
@@ -497,6 +572,11 @@ header {
         font-weight: normal;
         margin: 0 30px 20px 0;
     }
+
+
+
+
+
 
     .add-task {
         margin-top: 20px;
@@ -541,8 +621,9 @@ header {
     }
 }
 
+
 /* Add Task
-     ============================================ */
+        ============================================ */
 .add-task {
     &__overlay {
         background: rgba(102, 102, 102, 0.5);
@@ -558,7 +639,7 @@ header {
         height: calc(100vh);
 
         .add-task__main {
-            @include mq('900px') {
+            @include mq('700px') {
                 width: 90%;
             }
 
@@ -653,7 +734,7 @@ header {
 }
 
 /* Task Date
-     ============================================ */
+        ============================================ */
 .task-date {
     @include box-overlay();
     background-color: #fff;
@@ -686,12 +767,12 @@ header {
 }
 
 /* Project Overlay
-     ============================================ */
+        ============================================ */
 .project-overlay {
     @include box-overlay();
     background-color: white;
 
-    @include mq('900px') {
+    @include mq('700px') {
         width: 200px;
         right: 0;
     }
@@ -708,7 +789,7 @@ header {
 }
 
 /* Add Project
-     ============================================ */
+        ============================================ */
 .add-project {
     padding-left: 13px;
     padding-right: 20px;
@@ -736,3 +817,106 @@ header {
         @include cancel();
     }
 }
+
+/* logout button
+   ==================================================================*/
+.logout-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+    /* Ensure it stays on top */
+}
+
+.logout-button:hover {
+    background-color: #ff1a1a;
+}
+
+/* Ensure visibility and proper styling on screens smaller than or equal to 700px */
+@media (max-width: 700px) {
+    .logout-button {
+        bottom: 10px;
+        /* Adjust position to fit smaller screens */
+        right: 10px;
+        /* Adjust position to fit smaller screens */
+        padding: 8px 15px;
+        /* Slightly reduce padding */
+        font-size: 14px;
+        /* Slightly reduce font size */
+    }
+}
+
+
+/* login button
+   ==================================================================*/
+/* Center the login container */
+/* LoginPage.scss */
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    /* Background color */
+    font-family: 'Arial', sans-serif;
+    /* Use the same font as the main page */
+}
+
+.login-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-button {
+    background-color: #ff4d4d;
+    /* Blue color for the button */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add subtle shadow */
+}
+
+.login-button:hover {
+    background-color: #ff1a1a
+        /* Darken the blue when hovered */
+}
+
+.login-button:focus {
+    outline: none;
+}
+
+@media (max-width: 768px) {
+    .login-title {
+        font-size: 1.5rem;
+    }
+
+    .login-button {
+        padding: 10px 20px;
+    }
+}
+
+
+/* responsive
+  =================================================================*/
+/* General Mobile Responsiveness */
+
+
