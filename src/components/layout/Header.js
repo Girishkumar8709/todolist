@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { FaBars, FaPizzaSlice } from 'react-icons/fa';
+import { AddTask } from '../AddTask';
 
-export const Header = ({ darkMode, setDarkMode, isAuthenticated, toggleSidebar, setShowQuickAddTask }) => {
+export const Header = ({ darkMode, setDarkMode, isAuthenticated, toggleSidebar }) => {
   const [shouldShowMain, setShouldShowMain] = useState(false);
+  const [showQuickAddTask, setShowQuickAddTask] = useState(false);
 
   if (!isAuthenticated) {
     return null;
@@ -60,6 +62,15 @@ export const Header = ({ darkMode, setDarkMode, isAuthenticated, toggleSidebar, 
           </ul>
         </div>
       </nav>
+
+
+      <AddTask
+        showAddTaskMain={false}
+        shouldShowMain={shouldShowMain}
+        showQuickAddTask={showQuickAddTask}
+        setShowQuickAddTask={setShowQuickAddTask}
+      />
+
     </header>
   );
 };
