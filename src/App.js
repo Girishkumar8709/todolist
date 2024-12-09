@@ -13,7 +13,7 @@ import { ProjectsProvider, SelectedProjectProvider } from './context';
 const App = ({ darkModeDefault = false }) => {
   const [darkMode, setDarkMode] = useState(darkModeDefault);
   const [showTaskDate, setShowTaskDate] = useState(false);
-  const [taskDate, setTaskDate] = useState('');
+  const [ setTaskDate] = useState('');
 
   // State to manage sidebar visibility
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
